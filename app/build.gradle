@@ -1,0 +1,147 @@
+import com.example.compose.rally.buildsrc.Libs
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "com.example.compose.rally"
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName '1.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["dagger.hilt.disableModulesHaveInstallInCheck"] = "true"
+            }
+        }
+    }
+
+    signingConfigs {
+        // We use a bundled debug keystore, to allow debug builds from CI to be upgradable
+        debug {
+            storeFile rootProject.file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        compose true
+
+        // Disable unused AGP features
+        buildConfig false
+        aidl false
+        renderScript false
+        resValues false
+        shaders false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+    }
+
+    packagingOptions {
+
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
+}
+
+dependencies {
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Coroutines.android
+
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.Activity.activityCompose
+    implementation Libs.AndroidX.Navigation.fragment
+    implementation Libs.AndroidX.Navigation.uiKtx
+    implementation Libs.material
+
+    implementation Libs.AndroidX.Compose.layout
+    implementation Libs.AndroidX.Compose.material
+    implementation Libs.AndroidX.Compose.materialIconsExtended
+    implementation Libs.AndroidX.Compose.tooling
+    implementation Libs.AndroidX.Compose.runtime
+    implementation Libs.AndroidX.Compose.runtimeLivedata
+    implementation Libs.AndroidX.Compose.foundation
+    implementation Libs.AndroidX.Lifecycle.livedata
+
+    implementation Libs.AndroidX.Lifecycle.viewModelCompose
+    implementation Libs.AndroidX.Lifecycle.viewModelKtx
+
+    implementation Libs.Hilt.androids
+    implementation project(path: ':')
+    kapt Libs.Hilt.compiler
+
+    // FIXME: only needed for Compose alpha12
+    androidTestImplementation Libs.AndroidX.Activity.activityCompose
+
+    androidTestImplementation Libs.JUnit.junit
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.AndroidX.Test.Ext.junit
+    androidTestImplementation Libs.Coroutines.test
+    androidTestImplementation Libs.AndroidX.Test.core
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
+    androidTestImplementation Libs.AndroidX.Test.rules
+    androidTestImplementation Libs.AndroidX.Compose.test
+    androidTestImplementation Libs.AndroidX.Compose.uiTest
+    androidTestImplementation Libs.Hilt.androids
+    androidTestImplementation Libs.Hilt.testing
+    kaptAndroidTest Libs.Hilt.compiler
+
+    def room_version = "2.2.6"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha08"
+
+    // Hilt Jetpack Integrations
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-beta01'
+    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0-beta01'
+
+    // DatePicker
+    implementation Libs.ComposeMaterialDialogs.datetime
+
+    implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:0.15.1'
+
+
+}

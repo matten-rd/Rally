@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Rally</string>
+    <string name="total">Totalt sparande</string>
+    <string name="due">Netto</string>
+    <string name="accounts">Sparande</string>
+    <string name="bills">Inkomster &amp; Utgifter</string>
+    <string name="sort">Sortera</string>
+    <string name="see_all">VISA ALLA</string>
+</resources>

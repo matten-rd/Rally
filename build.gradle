@@ -1,0 +1,69 @@
+import com.example.compose.rally.buildsrc.Libs
+import com.example.compose.rally.buildsrc.Urls
+import com.example.compose.rally.buildsrc.Versions
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath Libs.androidGradlePlugin
+        classpath Libs.Kotlin.gradlePlugin
+        classpath Libs.Hilt.gradlePlugin
+    }
+}
+
+plugins {
+    id 'com.diffplug.spotless' version '5.10.0'
+}
+
+subprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+
+        if (!Libs.AndroidX.Compose.snapshot.isEmpty()) {
+            maven { url Urls.composeSnapshotRepo }
+        }
+    }
+
+    apply plugin: 'com.diffplug.spotless'
+    spotless {
+        kotlin {
+            target '**/*.kt'
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude('bin/**/*.kt')
+
+            ktlint(Versions.ktlint)
+            licenseHeaderFile rootProject.file('spotless/copyright.kt')
+        }
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            // Treat all Kotlin warnings as errors
+            allWarningsAsErrors = false
+
+            freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+
+            // Enable experimental coroutines APIs, including Flow
+            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
+            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.FlowPreview'
+            freeCompilerArgs += '-Xopt-in=kotlin.Experimental'
+
+            // Set JVM target to 1.8
+            jvmTarget = "1.8"
+        }
+    }
+    // androidx.test and hilt are forcing JUnit, 4.12. This forces them to use 4.13
+    configurations.configureEach {
+        resolutionStrategy {
+            force Libs.JUnit.junit
+        }
+    }
+}
+
+

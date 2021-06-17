@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.compose.rally">
+    <!-- Needed for UI Tests using ComposeTestRule without an existing activity
+         https://issuetracker.google.com/162419586 -->
+    <application
+        android:name=".RallyApplication">
+        <activity
+            android:name="androidx.activity.ComponentActivity" />
+    </application>
+</manifest>
