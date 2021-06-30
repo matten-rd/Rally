@@ -42,11 +42,11 @@ class BillViewModel @Inject constructor(
         billsList.groupBy {
             LocalDate.parse(it.date, DateTimeFormatter.ISO_DATE).month
         }.forEach { (month, bills) ->
-            val sumByMonth = bills.sumByDouble { it.amount.toDouble() }.toFloat()
+            val sumByMonth = bills.sumOf { it.amount.toDouble() }.toFloat()
             val monthExpenses = bills.filter { it.amount <= 0 }
-                .sumByDouble { it.amount.toDouble() }.toFloat()
+                .sumOf { it.amount.toDouble() }.toFloat()
             val monthIncome = bills.filter { it.amount > 0 }
-                .sumByDouble { it.amount.toDouble() }.toFloat()
+                .sumOf { it.amount.toDouble() }.toFloat()
             val color = if (sumByMonth <= 0) Red300 else Green500
             val monthString = month.toString()
             val monthData = MonthData(
@@ -70,7 +70,7 @@ class BillViewModel @Inject constructor(
         // Format the dates to MMM YYYY and get only the unique elements
         return dates?.map {
             it.format(DateTimeFormatter.ofPattern("MMM yyyy"))
-                .toUpperCase(Locale.getDefault())
+                .uppercase(Locale.getDefault())
         }?.distinct()
     }
 
@@ -79,9 +79,9 @@ class BillViewModel @Inject constructor(
         bills.value?.let { billsList ->
             billsList.filter {
                 LocalDate.parse(it.date, DateTimeFormatter.ISO_DATE)
-                    .format(
-                        DateTimeFormatter.ofPattern("MMM yyyy")
-                    ).toUpperCase(Locale.getDefault()) == tabTitle
+                                .format(
+                                    DateTimeFormatter.ofPattern("MMM yyyy")
+                                ).uppercase(Locale.getDefault()) == tabTitle
             }
         }
 
@@ -103,7 +103,7 @@ class BillViewModel @Inject constructor(
     ): List<BillData> {
         val categoryList: MutableList<BillData> = mutableListOf()
         allBillsByMonth?.groupBy { it.colorHEX }?.forEach { (colorHex, bills) ->
-            val sumByColor = bills.sumByDouble { it.amount.toDouble() }.toFloat()
+            val sumByColor = bills.sumOf { it.amount.toDouble() }.toFloat()
             val category = bills.find { it.colorHEX == colorHex }?.category
             val bill = BillData(
                 comment = null,

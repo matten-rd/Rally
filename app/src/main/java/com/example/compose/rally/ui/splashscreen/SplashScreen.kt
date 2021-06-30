@@ -2,19 +2,14 @@ package com.example.compose.rally.ui.splashscreen
 
 
 import android.os.Handler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Colors
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -22,16 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
-import com.example.compose.rally.nav.Screen
 import com.example.compose.rally.ui.theme.DarkGreen600
 import com.example.compose.rally.ui.theme.DarkGreen700
 import com.example.compose.rally.ui.theme.Green300
 import com.example.compose.rally.ui.theme.Green500
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import java.util.*
 
 
 @ExperimentalAnimationApi

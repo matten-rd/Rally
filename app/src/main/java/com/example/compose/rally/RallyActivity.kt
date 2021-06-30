@@ -1,21 +1,24 @@
 package com.example.compose.rally
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.*
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.rally.data.account.AccountData
 import com.example.compose.rally.data.bill.BillData
 import com.example.compose.rally.nav.DialogScreen
@@ -31,11 +34,8 @@ import com.example.compose.rally.ui.bills.Transaction
 import com.example.compose.rally.ui.components.RallyTab
 import com.example.compose.rally.ui.filtering.FilterBody
 import com.example.compose.rally.ui.overview.OverviewBody
-import com.example.compose.rally.ui.splashscreen.SplashScreen
 import com.example.compose.rally.ui.theme.RallyTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
@@ -76,23 +76,20 @@ fun RallyApp(accountsViewModel: AccountsViewModel, billViewModel: BillViewModel)
             ) {
                 Row(Modifier.selectableGroup()) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
+                    val currentRoute = navBackStackEntry?.destination?.route
                     items.forEach { screen ->
                         RallyTab(
-                            text = screen.label.toUpperCase(Locale.getDefault()),
+                            text = screen.label.uppercase(Locale.getDefault()),
                             icon = screen.icon,
                             selected = (currentRoute == screen.route),
                             onSelected = {
                                 if (currentRoute != screen.route) {
                                     navController.navigate(screen.route) {
-                                        popUpTo = navController.graph.startDestination
-                                        launchSingleTop = true
-                                        anim {
-                                            enter = R.anim.nav_default_enter_anim
-                                            exit = R.anim.nav_default_exit_anim
-                                            popEnter = R.anim.nav_default_pop_enter_anim
-                                            popExit = R.anim.nav_default_pop_exit_anim
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
                                         }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
                                 }
                             }

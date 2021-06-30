@@ -2,12 +2,7 @@
 
 package com.example.compose.rally.ui.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
@@ -20,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -50,7 +44,7 @@ fun <T> StatementBody(
             val pair = circleColors zip accountsProportion
             val group = pair.groupBy { it.first }
             val hell = group.mapKeys { entry ->
-                entry.value.sumByDouble {
+                entry.value.sumOf {
                     it.second.toDouble()
                 }
             }
@@ -77,7 +71,7 @@ fun <T> StatementBody(
                     style = MaterialTheme.typography.h2
                 )
                 Button(onClick = { navController.navigate(buttonLabel) }) {
-                    Text(text = buttonLabel.toUpperCase(Locale.getDefault()))
+                    Text(text = buttonLabel.uppercase(Locale.getDefault()))
                 }
             }
         }

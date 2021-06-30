@@ -3,18 +3,8 @@ package com.example.compose.rally.ui.components
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Divider
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -24,8 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.rally.data.account.AccountData
 import com.example.compose.rally.data.bill.BillData
 import com.example.compose.rally.data.month.MonthData
-import com.example.compose.rally.ui.theme.Green500
-import com.example.compose.rally.ui.theme.Red300
 import java.text.DecimalFormat
 import kotlin.math.absoluteValue
 
@@ -205,7 +193,7 @@ private val AmountDecimalFormat = DecimalFormat("#,###")
  * Used with accounts and bills to create the animated circle.
  */
 fun <E> List<E>.extractProportions(selector: (E) -> Float): List<Float> {
-    val total = this.sumByDouble { selector(it).toDouble() }
+    val total = this.sumOf { selector(it).toDouble() }
     return this.map { (selector(it) / total).toFloat() }
 }
 

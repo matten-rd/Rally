@@ -7,11 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.example.compose.rally.R
 import com.example.compose.rally.nav.DialogScreen
 import com.example.compose.rally.ui.components.BillRow
-import com.example.compose.rally.ui.components.RallyAlertDialogDeleteAccount
 import com.example.compose.rally.ui.components.RallyAlertDialogDeleteBill
 import com.example.compose.rally.ui.components.StatementBody
 import com.example.compose.rally.utils.ColorConverter

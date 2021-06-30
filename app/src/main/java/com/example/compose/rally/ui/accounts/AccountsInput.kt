@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.example.compose.rally.data.account.AccountData
 import com.example.compose.rally.nav.Screen
 import com.example.compose.rally.ui.components.ColorPicker

@@ -2,33 +2,26 @@ package com.example.compose.rally.ui.filtering
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.MoneyOff
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.rally.data.bill.BillData
 import com.example.compose.rally.ui.bills.BillViewModel
 import com.example.compose.rally.ui.components.*
-import com.example.compose.rally.ui.theme.*
+import com.example.compose.rally.ui.theme.DarkBlue900
+import com.example.compose.rally.ui.theme.Green500
+import com.example.compose.rally.ui.theme.Red300
 import com.example.compose.rally.utils.ColorConverter
 import kotlin.math.absoluteValue
 
@@ -43,12 +36,12 @@ fun FilterBody(
 ) {
     // TabLayout titles and states
     val tabTitles = viewModel.getTabTitles()
-    var stateInt = tabTitles?.lastIndex
+    val stateInt = tabTitles?.lastIndex
     var tabState by remember { mutableStateOf(stateInt) }
 
     val billsFilteredByMonth = viewModel.getBillsFilteredByMonth(tabTitles!![tabState!!])
 
-    val netto = billsFilteredByMonth!!.sumByDouble { it.amount.toDouble() }.toFloat()
+    val netto = billsFilteredByMonth!!.sumOf { it.amount.toDouble() }.toFloat()
 
     val billsFilteredByCategory = viewModel.getBillsFilteredByCategory(billsFilteredByMonth)
 
@@ -124,7 +117,7 @@ fun FilterBody(
         }
     }
 
-    val amount = filteredList?.sumByDouble { it.amount.toDouble() }?.toFloat() ?: 0f
+    val amount = filteredList?.sumOf { it.amount.toDouble() }?.toFloat() ?: 0f
 
     val billsProportions = filteredList?.extractProportions { it.amount.absoluteValue }
     val colors = filteredList?.map { ColorConverter.getColor(it.colorHEX) }
@@ -134,7 +127,7 @@ fun FilterBody(
     val pair = colors.zip(billsProportions!!)
     val group = pair.groupBy { it.first }
     val hell = group.mapKeys { entry ->
-        entry.value.sumByDouble {
+        entry.value.sumOf {
             it.second.toDouble()
         }
     }
@@ -165,7 +158,7 @@ fun FilterBody(
                 indicator = { Divider(thickness = 0.dp, color = Color.Transparent) },
                 backgroundColor = DarkBlue900
             ) {
-                tabTitles!!.forEachIndexed { index, title ->
+                tabTitles.forEachIndexed { index, title ->
                     RallyMonthTab(
                         title = title,
                         selected = (tabState == index),
@@ -301,8 +294,8 @@ fun CardLazyColumnCategory(
     modifier: Modifier = Modifier
 ) {
     billsFiltered?.let { bills ->
-        val totalExpenses = bills.filter { it.amount <= 0f }.sumByDouble { it.amount.toDouble() }.toFloat()
-        val totalIncome = bills.filter { it.amount > 0f }.sumByDouble { it.amount.toDouble() }.toFloat()
+        val totalExpenses = bills.filter { it.amount <= 0f }.sumOf { it.amount.toDouble() }.toFloat()
+        val totalIncome = bills.filter { it.amount > 0f }.sumOf { it.amount.toDouble() }.toFloat()
         Card {
             LazyColumn(modifier = modifier) {
                 items(bills) { bill ->

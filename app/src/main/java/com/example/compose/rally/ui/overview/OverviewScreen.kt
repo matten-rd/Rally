@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.example.compose.rally.R
 import com.example.compose.rally.nav.Screen
 import com.example.compose.rally.ui.accounts.AccountsViewModel
@@ -91,7 +90,7 @@ private fun <T> OverViewDivider(
     val pair = notUnColors zip proportions
     val group = pair.groupBy { it.first }
     val hell = group.mapKeys { it1 ->
-        it1.value.sumByDouble {
+        it1.value.sumOf {
             it.second.toDouble()
         }
     }
